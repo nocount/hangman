@@ -29,8 +29,7 @@ class Game():
 		self.username = name
 
 		word_list = ['3dhubs', 'marvin', 'print', 'filament', 'order', 'layer']
-		self.target = word_list[random.randint(0,5)]
-
+		self.target = word_list[random.randint(0, 5)]
 
 	def construct_target(self):
 		""" Constructs target string based on prior guesses. Also tallies correct guesses """
@@ -45,7 +44,6 @@ class Game():
 				target_string += '_'
 
 		return target_string
-
 
 	def construct_block(self):
 		""" Creates ASCII display block based on number of incorrect guesses """
@@ -96,7 +94,6 @@ class Game():
 		block = switch[self.incorrect]
 		return block
 
-
 	def make_guess(self, guess):
 		""" Makes sure that guess is kosher and returns string based on outcome of guess """
 		guess = guess.lower()
@@ -114,16 +111,15 @@ class Game():
 		else:
 			return "Guess correct!"
 
-
 	def check_status(self):
 		""" Checks for win/loss conditions """
 		if self.incorrect >= 5:
 			self.gameover = True
-			return 'You are a failure and you lose'
+			return '\nYou ran out of guesses! Better luck next time.\n'
 		elif self.correct >= len(self.target):
 			self.gameover = True
 			self.won = True
-			return 'YOu win HOLY MOLY'
+			return '\nCongratulations you won this game of Hangman!!!\n'
 		else:
 			return ""
 
@@ -131,7 +127,7 @@ class Game():
 def save_score(name):
 	""" Saves score to file on disk. Score based on number of wins per username """
 	if os.path.getsize("score_history.pkl") > 0:
-		with open("score_history.pkl","rb") as history:
+		with open("score_history.pkl", "rb") as history:
 			scores = pickle.load(history)
 
 		if name in scores:
@@ -142,21 +138,19 @@ def save_score(name):
 		sorted_temp = sorted(scores.items(), key=lambda kv: kv[1])
 		sorted_temp.reverse()
 		sorted_scores = collections.OrderedDict(sorted_temp)
-		with open("score_history.pkl","wb") as history:
+		with open("score_history.pkl", "wb") as history:
 			pickle.dump(sorted_scores, history)
 
 	else:
 		scores = {name: 1}
-		with open("score_history.pkl","wb") as history:
+		with open("score_history.pkl", "wb") as history:
 			pickle.dump(scores, history)
 
 
 def get_scores():
 	""" Retrieves scores """
 	if os.path.getsize("score_history.pkl") > 0:
-		with open("score_history.pkl","rb") as history:
+		with open("score_history.pkl", "rb") as history:
 			scores = pickle.load(history)
 
 	return str(scores).strip("OrderedDict")
-
-

@@ -17,7 +17,7 @@ new_game = game.Game()
 @app.route('/hangman/newgame', methods=['POST'])
 def game_request():
 	""" Post request for creating a new game. Username is only required parameter """
-	if not request.json or not 'name' in request.json:
+	if not request.json or 'name' not in request.json:
 		abort(400)
 
 	name = request.json['name']
@@ -32,7 +32,7 @@ def game_request():
 @app.route('/hangman/makeguess', methods=['POST'])
 def post_guess():
 	""" Post request for making guesses to active game """
-	if not request.json or not 'guess' in request.json:
+	if not request.json or 'guess' not in request.json:
 		abort(400)
 
 	# Constructing response based on outcome of users guess
@@ -47,11 +47,11 @@ def post_guess():
 	if new_game.gameover:
 			if new_game.won:
 				game.save_score(new_game.username)
-				res = "Congratulations you have won the game of Hangman\n\n"
+				res = "\nCongratulations you won this game of Hangman!!!\n\n"
 			else:
-				res = block + "\nYou get nothing, you lose, good day sir.\n\n"
+				res = block + "\nYou ran out of guesses! Better luck next time.\n\n"
 	else:
-		res = outcome +"\n\n" + block + "\n Here is the word now: \n" + target +"\n\n" + prev_guess
+		res = outcome + "\n\n" + block + "\nHere is the word now: \n" + target + "\n\n" + prev_guess
 
 	return res
 

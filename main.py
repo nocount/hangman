@@ -29,7 +29,6 @@ def run_new():
 		print(new_game.check_status())
 		if new_game.gameover:
 			if new_game.won:
-				print("Congratulations you have won the game of Hangman")
 				game.save_score(username)
 			else:
 				print(new_game.construct_block()+"\n")
@@ -39,6 +38,5 @@ def run_new():
 	print(game.get_scores() + "\n")
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
 	run_new()
